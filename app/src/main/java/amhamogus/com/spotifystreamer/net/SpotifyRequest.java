@@ -1,23 +1,22 @@
 package amhamogus.com.spotifystreamer.net;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import java.util.List;
 
-import java.io.IOException;
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.ArtistsPager;
 
 /**
- * Created by amogus on 6/6/15.
+ * A user request that is sent to Spotify.
  */
 public class SpotifyRequest {
 
-    OkHttpClient client = new OkHttpClient();
-
-    public String run(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/search?q=" + url + "&type=artist")
-                .build();
-        Response response = client.newCall(request).execute();
-        return response.body().string();
+   /** Search for artists based on a name value submitted by the user. */
+    public List<Artist> searchArtist(String name) {
+        SpotifyApi api = new SpotifyApi();
+        SpotifyService spotifyService = api.getService();
+        ArtistsPager results = spotifyService.searchArtists(name);
+        return results.artists.items;
     }
 }

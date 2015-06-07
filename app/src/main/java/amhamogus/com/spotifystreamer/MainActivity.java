@@ -3,60 +3,57 @@ package amhamogus.com.spotifystreamer;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import java.util.List;
 
+import amhamogus.com.spotifystreamer.model.MyArtistAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
+import kaaes.spotify.webapi.android.models.Artist;
 
 
 public class MainActivity extends Activity {
 
-    private String TAG = "SPOTIFY APP ERROR";
-    protected String query;
-    protected TextView mTextView;
+    protected List<Artist> artistList;
+    protected MyArtistAdapter myArtistAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get reference to text input
-        EditText searchInput = (EditText)findViewById(R.id.editText);
+        // Get reference to search term.
+        EditText searchInput = (EditText) findViewById(R.id.editText);
+
+        // Setup action listener to respond to user searches.
         searchInput.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean imeActionHandled = false;
-                if(actionId == EditorInfo.IME_ACTION_GO){
-                    if(v.getText().toString().equals("")){
-                        Toast.makeText(getApplicationContext(),"Please Enter Artist Name", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+
+                    if (v.getText().toString().equals("")) {
+                        // Show toast if search team is blank.
+                        Toast.makeText(getApplicationContext(),
+                                "Please Enter Artist Name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Call spotify service
                         new SpotifyWorkerTask().execute(v.getText().toString());
                         imeActionHandled = true;
+
                     }
                 }
                 return imeActionHandled;
             }
         });
 
-
-        // Get Reference to temporary output
-        mTextView = (TextView)findViewById(R.id.networkText);
-
-//        // Show keyboard to optimize ux
-//        InputMethodManager inputMethodManager =
-//                (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputMethodManager.showSoftInput(searchInput, InputMethodManager.SHOW_IMPLICIT);
-
-        //new SpotifyWorkerTask().execute(query);
     }
 
     @Override
@@ -77,35 +74,28 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    private class SpotifyWorkerTask extends AsyncTask<String, String, String>{
+    private class SpotifyWorkerTask extends AsyncTask<String, String, List<Artist>> {
 
-        String networkResponse;
         SpotifyRequest call;
 
-        protected String doInBackground(String...strings){
-
-            try {
-                call = new SpotifyRequest();
-                networkResponse = call.run(strings[0]);
-                return networkResponse;
-
-            } catch (IOException e){
-                Log.d(TAG, "WE HAVE A PROBLEM:" + e.toString());
-                networkResponse = "Soemthing went wrong wrong with network request!";
-            }
-
-            return networkResponse;
+        protected List<Artist> doInBackground(String... strings) {
+            call = new SpotifyRequest();
+            return call.searchArtist(strings[0]);
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Log.d(TAG, "network response is: " + s);
-            mTextView.setText(s);
+        protected void onPostExecute(List<Artist> returnedArtists) {
+            super.onPostExecute(returnedArtists);
+            artistList = returnedArtists;
+
+            myArtistAdapter =
+                    new MyArtistAdapter(getApplicationContext(), 0,
+                            artistList);
+            ListView list = (ListView) findViewById(R.id.artistListView);
+            list.setAdapter(myArtistAdapter);
         }
     }
 }

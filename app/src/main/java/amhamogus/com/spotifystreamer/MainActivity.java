@@ -67,13 +67,11 @@ public class MainActivity extends Activity {
                         // Call spotify service
                         new SpotifyWorkerTask().execute(v.getText().toString());
                         imeActionHandled = true;
-
                     }
                 }
                 return imeActionHandled;
             }
         });
-
     }
 
     @Override

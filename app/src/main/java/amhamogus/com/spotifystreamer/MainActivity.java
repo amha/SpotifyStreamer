@@ -1,6 +1,7 @@
 package amhamogus.com.spotifystreamer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -22,9 +24,17 @@ import amhamogus.com.spotifystreamer.model.MyArtistAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 import kaaes.spotify.webapi.android.models.Artist;
 
+/**
+ * Main entry point into Spotify Streamer - Stage 1.
+ */
 public class MainActivity extends Activity {
 
+    /**
+     * List of artist objects.
+     */
     protected List<Artist> artistList;
+
+    /** Custom adapter that maps artist object to list view. */
     protected MyArtistAdapter myArtistAdapter;
 
     @Override
@@ -40,6 +50,8 @@ public class MainActivity extends Activity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean imeActionHandled = false;
+
+                // Triggered when the "go" button is tapped.
                 if (actionId == EditorInfo.IME_ACTION_GO) {
 
                     if (v.getText().toString().equals("")) {
@@ -47,6 +59,11 @@ public class MainActivity extends Activity {
                         Toast.makeText(getApplicationContext(),
                                 "Please Enter Artist Name", Toast.LENGTH_SHORT).show();
                     } else {
+
+                        // Hide keyboard so the user can view content.
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
                         // Call spotify service
                         new SpotifyWorkerTask().execute(v.getText().toString());
                         imeActionHandled = true;
@@ -80,6 +97,9 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Helper class that requests a list or Artists from Spotify.
+     */
     private class SpotifyWorkerTask extends AsyncTask<String, String, List<Artist>> {
 
         SpotifyRequest call;
@@ -95,15 +115,15 @@ public class MainActivity extends Activity {
             artistList = returnedArtists;
 
             myArtistAdapter =
-                    new MyArtistAdapter(getApplicationContext(), 0,
-                            artistList);
+                    new MyArtistAdapter(getApplicationContext(), 0, artistList);
+
             ListView list = (ListView) findViewById(R.id.artistListView);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Artist selectedArtist = (Artist) parent.getItemAtPosition(position);
-                    // Log.d("AMHA-OUT", "Position = " + position + ", row as text " +selectedArtist.id);
 
+                    // Package selected artist's name and ID to send to top track activity.
                     Bundle bundle = new Bundle();
                     bundle.putString("ARTIST_NAME", selectedArtist.name);
                     bundle.putString("ARTIST_ID", selectedArtist.id);

@@ -16,7 +16,7 @@ import amhamogus.com.spotifystreamer.R;
 import kaaes.spotify.webapi.android.models.Track;
 
 /**
- * Maps an list of Tracks to a ListView.
+ * Maps an Track object to the top track row layout file.
  */
 public class TrackListAdapter extends ArrayAdapter<Track> {
 
@@ -24,17 +24,19 @@ public class TrackListAdapter extends ArrayAdapter<Track> {
         super(context, resourceID, tracks);
     }
 
+
     public View getView(int position, View view, ViewGroup parent) {
         View trackView;
 
         if (view == null) {
-            // Instantiate the view if we haven't do so before.
+            // Instantiate the track row if we haven't done so before.
             trackView = LayoutInflater.from(getContext())
                     .inflate(R.layout.track_row, parent, false);
         } else {
             trackView = view;
         }
 
+        // Get track data from the List<Tracks> at position.
         Track currentTrack = getItem(position);
 
         // Setting the name of the track.
@@ -47,12 +49,13 @@ public class TrackListAdapter extends ArrayAdapter<Track> {
 
         // Setting Album Cover.
         ImageView albumCover = (ImageView) trackView.findViewById(R.id.trackListImage);
+
         if (currentTrack.album.images.size() > 0) {
+            // Load album image if available
             Picasso.with(getContext())
                     .load(currentTrack.album.images.get(0).url)
                     .into(albumCover);
         }
-
         return trackView;
     }
 }

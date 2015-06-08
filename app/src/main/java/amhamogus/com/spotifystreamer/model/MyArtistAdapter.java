@@ -16,7 +16,7 @@ import amhamogus.com.spotifystreamer.R;
 import kaaes.spotify.webapi.android.models.Artist;
 
 /**
- * Maps a list Artists to a list view.
+ * Maps an Artist Object to the artist row layout file.
  */
 
 public class MyArtistAdapter extends ArrayAdapter<Artist> {
@@ -33,22 +33,26 @@ public class MyArtistAdapter extends ArrayAdapter<Artist> {
         View artistView;
 
         if (view == null) {
+            // Instantiate the artist row if we haven't done so before.
             artistView = LayoutInflater.from(getContext())
                     .inflate(R.layout.artist_row, parent, false);
         } else {
             artistView = view;
         }
 
+        // Get artist data from the List<Artists> object at the specified position.
         Artist artist = getItem(position);
 
+        // Setting the name of the artist.
         TextView currentArtistName = (TextView) artistView.findViewById(R.id.artistName);
         currentArtistName.setText(artist.name);
 
-        ImageView albumCover = (ImageView) artistView.findViewById(R.id.artistImage);
+        // Get reference to image view.
+        ImageView artistImg = (ImageView) artistView.findViewById(R.id.artistImage);
 
         if (artist.images.size() > 0) {
             // Load artist image if available
-            Picasso.with(getContext()).load(artist.images.get(0).url).into(albumCover);
+            Picasso.with(getContext()).load(artist.images.get(0).url).into(artistImg);
         }
 
         return artistView;

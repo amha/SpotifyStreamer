@@ -27,12 +27,15 @@ public class SpotifyRequest {
 
     /**
      * Search for top 10 tracks for a specified artist.
+     *
+     * @return Tracks - Returns a list
      */
     public Tracks searchTopTracks(String artistID) {
 
         SpotifyApi api = new SpotifyApi();
         SpotifyService spotifyService = api.getService();
 
+        // Creating a map that represents the top tracks query.
         Map map = new HashMap<>();
         map.put("id", artistID);
         map.put("country", "US");

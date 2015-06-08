@@ -8,18 +8,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.model.TrackListAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 import kaaes.spotify.webapi.android.models.Tracks;
 
+/**
+ * List of Top Tracks for a given artist.
+ */
 public class TopTracks extends Activity {
 
-
     protected Tracks TOP_TRACKS;
-    protected TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,9 @@ public class TopTracks extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Helper class that requests top tracks from Spotify.
+     */
     private class TopTrackWorker extends AsyncTask<String, String, Tracks> {
 
         SpotifyRequest topTrackRequest;
@@ -78,13 +82,19 @@ public class TopTracks extends Activity {
         protected void onPostExecute(Tracks tracks) {
 
             if (tracks != null) {
-                TrackListAdapter adapter =
-                        new TrackListAdapter(getApplicationContext(), 0, tracks.tracks);
-                ListView trackList = (ListView) findViewById(R.id.top_track_list);
-                trackList.setAdapter(adapter);
-            } else {
-                textView.setText("Woops! It looks like someone went ahead and "
-                        + "snatched these tracks!");
+                if (tracks.tracks.size() == 0) {
+                    // Zero tracks returned from Spotify api.
+                    // Inform the user by display toast message.
+                    Toast.makeText(getApplicationContext(),
+                            "Woops! It looks like someone went ahead and "
+                                    + "snatched these tracks!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Display the top tracks returned from from Spotify api.
+                    TrackListAdapter adapter =
+                            new TrackListAdapter(getApplicationContext(), 0, tracks.tracks);
+                    ListView trackList = (ListView) findViewById(R.id.top_track_list);
+                    trackList.setAdapter(adapter);
+                }
             }
         }
     }

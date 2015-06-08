@@ -1,12 +1,15 @@
 package amhamogus.com.spotifystreamer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,10 +17,10 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import amhamogus.com.spotifystreamer.activities.TopTracks;
 import amhamogus.com.spotifystreamer.model.MyArtistAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 import kaaes.spotify.webapi.android.models.Artist;
-
 
 public class MainActivity extends Activity {
 
@@ -95,6 +98,22 @@ public class MainActivity extends Activity {
                     new MyArtistAdapter(getApplicationContext(), 0,
                             artistList);
             ListView list = (ListView) findViewById(R.id.artistListView);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Artist selectedArtist = (Artist) parent.getItemAtPosition(position);
+                    // Log.d("AMHA-OUT", "Position = " + position + ", row as text " +selectedArtist.id);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ARTIST_NAME", selectedArtist.name);
+                    bundle.putString("ARTIST_ID", selectedArtist.id);
+
+                    Intent intent = new Intent(getApplicationContext(), TopTracks.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent, bundle);
+
+                }
+            });
             list.setAdapter(myArtistAdapter);
         }
     }

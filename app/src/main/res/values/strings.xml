@@ -5,4 +5,6 @@
     <string name="action_settings">Settings</string>
 
     <string name="ghost_text">Search For An Artist</string>
+    <string name="title_activity_top_tracks">Top 10 Tracks</string>
+    <string name="sub_title">Artist Name</string>
 </resources>

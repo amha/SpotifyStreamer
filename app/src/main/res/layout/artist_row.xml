@@ -20,7 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:text="New Text"
         android:layout_marginStart="37dp"
-        style="@style/artistText"
+        style="@style/primaryText"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/artistImage" />
 

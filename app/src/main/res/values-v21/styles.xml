@@ -6,8 +6,14 @@
         <item name="android:colorPrimaryDark">@color/statusbar</item>
     </style>
 
-    <style name="artistText" parent="android:Widget.Material.TextView">
+    <style name="primaryText" parent="android:Widget.Material.TextView">
         <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">@dimen/medium_text</item>
+    </style>
+
+    <style name="secondaryText" parent="android:Widget.Material.TextView">
+        <item name="android:textColor">@color/medium_dark_text</item>
+        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">@dimen/small_text</item>
     </style>
 </resources>

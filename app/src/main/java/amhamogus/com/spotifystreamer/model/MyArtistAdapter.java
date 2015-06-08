@@ -16,8 +16,9 @@ import amhamogus.com.spotifystreamer.R;
 import kaaes.spotify.webapi.android.models.Artist;
 
 /**
- * Created by amogus on 6/6/15.
+ * Maps a list Artists to a list view.
  */
+
 public class MyArtistAdapter extends ArrayAdapter<Artist> {
 
     List<Artist> artists;
@@ -32,7 +33,7 @@ public class MyArtistAdapter extends ArrayAdapter<Artist> {
         View artistView;
 
         if (view == null) {
-            artistView = (View) LayoutInflater.from(getContext())
+            artistView = LayoutInflater.from(getContext())
                     .inflate(R.layout.artist_row, parent, false);
         } else {
             artistView = view;
@@ -45,7 +46,6 @@ public class MyArtistAdapter extends ArrayAdapter<Artist> {
 
         ImageView albumCover = (ImageView) artistView.findViewById(R.id.artistImage);
 
-        String imageURLS;
         if (artist.images.size() > 0) {
             // Load artist image if available
             Picasso.with(getContext()).load(artist.images.get(0).url).into(albumCover);

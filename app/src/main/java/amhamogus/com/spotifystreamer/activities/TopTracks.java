@@ -10,17 +10,19 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import amhamogus.com.spotifystreamer.R;
+import amhamogus.com.spotifystreamer.model.MyTracks;
 import amhamogus.com.spotifystreamer.model.TrackListAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
-import kaaes.spotify.webapi.android.models.Tracks;
 
 /**
  * List of Top Tracks for a given artist.
  */
 public class TopTracks extends Activity {
 
-    protected Tracks TOP_TRACKS;
+    protected ArrayList<MyTracks> TOP_TRACKS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,30 @@ public class TopTracks extends Activity {
         }
 
         // Get top tracks in the background.
-        new TopTrackWorker().execute(artist_id);
+        if (savedInstanceState == null) {
+            new TopTrackWorker().execute(artist_id);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outstate) {
+        if (outstate != null) {
+            outstate.putParcelableArrayList("tracks", TOP_TRACKS);
+        }
+        super.onSaveInstanceState(outstate);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+        if (bundle != null) {
+            TOP_TRACKS = bundle.getParcelableArrayList("tracks");
+
+            TrackListAdapter adapter =
+                    new TrackListAdapter(getApplicationContext(), 0, TOP_TRACKS);
+            ListView trackList = (ListView) findViewById(R.id.top_track_list);
+            trackList.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -67,22 +92,22 @@ public class TopTracks extends Activity {
     /**
      * Helper class that requests top tracks from Spotify.
      */
-    private class TopTrackWorker extends AsyncTask<String, String, Tracks> {
+    private class TopTrackWorker extends AsyncTask<String, String, ArrayList<MyTracks>> {
 
         SpotifyRequest topTrackRequest;
 
         @Override
-        protected Tracks doInBackground(String... strings) {
+        protected ArrayList<MyTracks> doInBackground(String... strings) {
             topTrackRequest = new SpotifyRequest();
             TOP_TRACKS = topTrackRequest.searchTopTracks(strings[0]);
             return TOP_TRACKS;
         }
 
         @Override
-        protected void onPostExecute(Tracks tracks) {
+        protected void onPostExecute(ArrayList<MyTracks> tracks) {
 
             if (tracks != null) {
-                if (tracks.tracks.size() == 0) {
+                if (tracks.size() == 0) {
                     // Zero tracks returned from Spotify api.
                     // Inform the user by display toast message.
                     Toast.makeText(getApplicationContext(),
@@ -91,7 +116,7 @@ public class TopTracks extends Activity {
                 } else {
                     // Display the top tracks returned from from Spotify api.
                     TrackListAdapter adapter =
-                            new TrackListAdapter(getApplicationContext(), 0, tracks.tracks);
+                            new TrackListAdapter(getApplicationContext(), 0, tracks);
                     ListView trackList = (ListView) findViewById(R.id.top_track_list);
                     trackList.setAdapter(adapter);
                 }

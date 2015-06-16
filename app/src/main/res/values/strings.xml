@@ -7,4 +7,10 @@
     <string name="ghost_text">Search For An Artist</string>
     <string name="title_activity_top_tracks">Top 10 Tracks</string>
     <string name="sub_title">Artist Name</string>
+
+    <!-- Error Handling: Alerts -->
+    <string name="no_internet_title">No Internet Connected</string>
+    <string name="no_internet_body">Your device is not connected to the internet.</string>
+    <string name="no_internet_positive_button">Network Settings</string>
+    <string name="no_internet_negative_button">Cancel</string>
 </resources>

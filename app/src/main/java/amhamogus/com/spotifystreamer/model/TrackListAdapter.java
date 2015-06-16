@@ -10,17 +10,16 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
-import kaaes.spotify.webapi.android.models.Track;
 
 /**
  * Maps an Track object to the top track row layout file.
  */
-public class TrackListAdapter extends ArrayAdapter<Track> {
+public class TrackListAdapter extends ArrayAdapter<MyTracks> {
 
-    public TrackListAdapter(Context context, int resourceID, List<Track> tracks) {
+    public TrackListAdapter(Context context, int resourceID, ArrayList<MyTracks> tracks) {
         super(context, resourceID, tracks);
     }
 
@@ -37,23 +36,23 @@ public class TrackListAdapter extends ArrayAdapter<Track> {
         }
 
         // Get track data from the List<Tracks> at position.
-        Track currentTrack = getItem(position);
+        MyTracks currentTrack = getItem(position);
 
         // Setting the name of the track.
         TextView trackName = (TextView) trackView.findViewById(R.id.trackTitle);
-        trackName.setText(currentTrack.name);
+        trackName.setText(currentTrack.getTrackName());
 
         // Setting the album name.
         TextView albumName = (TextView) trackView.findViewById(R.id.albumName);
-        albumName.setText(currentTrack.album.name);
+        albumName.setText(currentTrack.getAlbumName());
 
         // Setting Album Cover.
         ImageView albumCover = (ImageView) trackView.findViewById(R.id.trackListImage);
 
-        if (currentTrack.album.images.size() > 0) {
+        if (currentTrack.albumImageUrl.length() > 0) {
             // Load album image if available
             Picasso.with(getContext())
-                    .load(currentTrack.album.images.get(0).url)
+                    .load(currentTrack.albumImageUrl)
                     .into(albumCover);
         }
         return trackView;

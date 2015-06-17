@@ -10,16 +10,11 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,12 +29,9 @@ import amhamogus.com.spotifystreamer.net.SpotifyRequest;
  */
 public class MainActivity extends Activity {
 
-    protected final String TAG = "AMHAMOGUS CONSOLE: ";
-
     /**
      * List of artist objects.
      */
-    //protected List<MyArtist> artistList;
     protected ArrayList<MyArtist> artistList;
 
     /**
@@ -47,46 +39,44 @@ public class MainActivity extends Activity {
      */
     protected MyArtistAdapter myArtistAdapter;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
+        // Hide progress bar.
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        // Check for network connectivity.
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network = connectivityManager.getActiveNetworkInfo();
 
         if (network != null && network.isConnectedOrConnecting()) {
-
             // Get reference to search term.
-            EditText searchInput = (EditText) findViewById(R.id.editText);
+            SearchView searchInput = (SearchView) findViewById(R.id.search_input);
 
-            // Setup action listener to respond to user searches.
-            searchInput.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            // Listener respond to user searches.
+            searchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    boolean imeActionHandled = false;
-
-                    // Triggered when the "go" button is tapped.
-                    if (actionId == EditorInfo.IME_ACTION_GO) {
-
-                        if (v.getText().toString().equals("")) {
-                            // Show toast if search team is blank.
-                            Toast.makeText(getApplicationContext(),
-                                    "Please Enter Artist Name", Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            // Hide keyboard so the user can view content.
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-                            // Call spotify service
-                            new SpotifyWorkerTask().execute(v.getText().toString());
-                            imeActionHandled = true;
-                        }
+                public boolean onQueryTextSubmit(String s) {
+                    if (s.equals("")) {
+                        // Show toast if search it submitted without a search term.
+                        Toast.makeText(getApplicationContext(),
+                                "Please Enter Artist Name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Send search request to Spotify in the background.
+                        new SpotifyWorkerTask().execute(s);
                     }
-                    return imeActionHandled;
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
                 }
             });
         } else {
@@ -107,25 +97,21 @@ public class MainActivity extends Activity {
             AlertDialog alertDialog = alertContent.create();
             alertDialog.show();
         }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("AMHA-OUT", "ON START METHOD CALLED");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("AMHA-OUT", "ON RESUME METHOD CALLED");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("AMHA-OUT", "ON PAUSE METHOD CALLED");
     }
 
     protected void onStop() {
@@ -167,27 +153,6 @@ public class MainActivity extends Activity {
         list.setAdapter(myArtistAdapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * Helper class that requests a list or Artists from Spotify.
      */
@@ -201,31 +166,55 @@ public class MainActivity extends Activity {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            // Check if Progress Bar has been access
+            if (progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }
+
+
+        @Override
         protected void onPostExecute(ArrayList<MyArtist> returnedArtists) {
             super.onPostExecute(returnedArtists);
 
-            artistList = returnedArtists;
+            progressBar.setVisibility(View.INVISIBLE);
 
-            myArtistAdapter =
-                    new MyArtistAdapter(getApplicationContext(), 0, returnedArtists);
+            if (returnedArtists.size() == 0) {
+                // Zero artists returned from Spotify api.
+                // Inform the user by displaying toast message.
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.no_artists), Toast.LENGTH_SHORT).show();
+            } else {
+                artistList = returnedArtists;
 
-            ListView list = (ListView) findViewById(R.id.artistListView);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    MyArtist selectedArtist = (MyArtist) parent.getItemAtPosition(position);
+                myArtistAdapter =
+                        new MyArtistAdapter(getApplicationContext(), 0, returnedArtists);
 
-                    // Package selected artist's name and ID to send to top track activity.
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ARTIST_NAME", selectedArtist.getName());
-                    bundle.putString("ARTIST_ID", selectedArtist.getId());
+                // Populate list view with artists returned from Spotify.
+                ListView list = (ListView) findViewById(R.id.artistListView);
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        MyArtist selectedArtist = (MyArtist) parent.getItemAtPosition(position);
 
-                    Intent intent = new Intent(getApplicationContext(), TopTracks.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent, bundle);
-                }
-            });
-            list.setAdapter(myArtistAdapter);
+                        // Package selected artist's name and ID to send to top track activity.
+                        Bundle bundle = new Bundle();
+                        bundle.putString("ARTIST_NAME", selectedArtist.getName());
+                        bundle.putString("ARTIST_ID", selectedArtist.getId());
+
+                        Intent intent = new Intent(getApplicationContext(), TopTracks.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent, bundle);
+                    }
+                });
+                list.setAdapter(myArtistAdapter);
+            }
         }
     }
 }

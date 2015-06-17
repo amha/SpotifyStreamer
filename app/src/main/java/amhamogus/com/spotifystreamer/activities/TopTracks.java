@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +19,7 @@ import amhamogus.com.spotifystreamer.net.SpotifyRequest;
  * List of Top Tracks for a given artist.
  */
 public class TopTracks extends Activity {
+
 
     protected ArrayList<MyTracks> TOP_TRACKS;
 
@@ -67,27 +66,6 @@ public class TopTracks extends Activity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_top_tracks, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * Helper class that requests top tracks from Spotify.
@@ -109,10 +87,9 @@ public class TopTracks extends Activity {
             if (tracks != null) {
                 if (tracks.size() == 0) {
                     // Zero tracks returned from Spotify api.
-                    // Inform the user by display toast message.
+                    // Inform the user by displaying toast message.
                     Toast.makeText(getApplicationContext(),
-                            "Woops! It looks like someone went ahead and "
-                                    + "snatched these tracks!", Toast.LENGTH_SHORT).show();
+                            getResources().getString(R.string.no_tracks), Toast.LENGTH_SHORT).show();
                 } else {
                     // Display the top tracks returned from from Spotify api.
                     TrackListAdapter adapter =

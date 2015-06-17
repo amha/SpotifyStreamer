@@ -8,22 +8,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-
-    <EditText
-        android:id="@+id/editText"
+    <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:hint="@string/ghost_text"
-        android:imeOptions="actionGo"
-        android:inputType="text" />
+        android:inputType="text"
+        android:queryHint="@string/ghost_text"
+        android:iconifiedByDefault="false"
+        android:id="@+id/search_input" />
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/search_input"
+        android:id="@+id/progress_bar"
+        android:layout_marginTop="10dp" />
 
     <ListView
         android:id="@+id/artistListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/search_input" />
 
 </RelativeLayout>

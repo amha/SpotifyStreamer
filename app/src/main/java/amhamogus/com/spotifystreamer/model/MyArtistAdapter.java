@@ -35,7 +35,7 @@ public class MyArtistAdapter extends ArrayAdapter<MyArtist> {
         if (view == null) {
             // Instantiate the artist row if we haven't done so before.
             artistView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.artist_row, parent, false);
+                    .inflate(R.layout.adapter_artist_row, parent, false);
         } else {
             artistView = view;
         }

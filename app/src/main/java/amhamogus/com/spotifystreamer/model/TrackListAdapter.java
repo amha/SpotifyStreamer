@@ -30,7 +30,7 @@ public class TrackListAdapter extends ArrayAdapter<MyTracks> {
         if (view == null) {
             // Instantiate the track row if we haven't done so before.
             trackView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.track_row, parent, false);
+                    .inflate(R.layout.adapter_track_row, parent, false);
         } else {
             trackView = view;
         }

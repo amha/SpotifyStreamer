@@ -47,7 +47,6 @@ public class SpotifyRequest {
             // Pass error text to the console.
             Log.d("Error", "Error Retrieving Artist " + spotifyError.toString());
         }
-
         return myArtists;
     }
 
@@ -78,9 +77,6 @@ public class SpotifyRequest {
             }
         } catch (RetrofitError error) {
             SpotifyError spotifyError = SpotifyError.fromRetrofitError(error);
-
-            // Notify the user that something has gone wrong.
-            Toast.makeText(null, "Can't retrieve artists. Restart the app.", Toast.LENGTH_LONG).show();
 
             // Pass error text to the console.
             Log.d("Error", "Error Retrieving Top Tracks: " + spotifyError.toString());

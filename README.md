@@ -4,8 +4,8 @@ An Android app that lets you search Spotify for musicians and their top songs. T
 
 The **Search** screen displays search results below the text input field:
 
-![Spotify Streamer Search sceen] (https://lh4.googleusercontent.com/CFhSf0u_s7F9d20uba4RkAnhnoR7szxNY9_tM52dzJQa8anBv6dyi4o1cWifZNXoGASgUpuJU25GFnE=w2480-h1334)
+![Spotify Streamer Search sceen] (http://amhamogus.com/home/amhamogus/amhamogus.com/projects/udacity/android/nano/spotify-1.png)
 
 Tapping an artist will launch the **Top 10 Tracks** screen:
 
-![Top 10 Tracks Screen](https://lh3.googleusercontent.com/YyzZdS8LVi_Dq0e0Yv231cFxE0J58s1Dudvb5-_qOSESJgNGjr43qy9mAFjjiu9Jf5zCGdthNHJIbK8=w2480-h1334)
+![Top 10 Tracks Screen](http://amhamogus.com/home/amhamogus/amhamogus.com/projects/udacity/android/nano/spotify-2.png)

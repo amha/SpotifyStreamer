@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="toolbar">#37474F</color>
-    <color name="statusbar">#263238</color>
+    <color name="toolbar">#43A047</color>
+    <color name="statusbar">#2E7D32</color>
+    <color name="navigationBarColor">#2E7D32</color>
 
     <color name="dark_text">#212121</color>
     <color name="medium_dark_text">#424242</color>

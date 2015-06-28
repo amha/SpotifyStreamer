@@ -1,4 +1,4 @@
-package amhamogus.com.spotifystreamer.model;
+package amhamogus.com.spotifystreamer.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
+import amhamogus.com.spotifystreamer.model.MyArtist;
 
 /**
  * Maps an Artist Object to the artist row layout file.
@@ -45,16 +46,16 @@ public class MyArtistAdapter extends ArrayAdapter<MyArtist> {
 
         // Setting the name of the artist.
         TextView currentArtistName = (TextView) artistView.findViewById(R.id.artistName);
-        currentArtistName.setText(artist.name);
+        currentArtistName.setText(artist.getName());
 
         // Get reference to image view.
         ImageView artistImg = (ImageView) artistView.findViewById(R.id.artistImage);
 
-        if (artist.imageURL == null) {
+        if (artist.getImageURL().equals(null)) {
             Log.d("AMHA", "passing null to image");
-        } else if (artist.imageURL.length() > 0) {
+        } else if (artist.getImageURL().length() > 0) {
             // Load artist image if available
-            Picasso.with(getContext()).load(artist.imageURL).into(artistImg);
+            Picasso.with(getContext()).load(artist.getImageURL()).into(artistImg);
         }
 
         return artistView;

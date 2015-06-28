@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimary">@color/toolbar</item>
         <item name="android:colorPrimaryDark">@color/statusbar</item>
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
     </style>
 
     <style name="primaryText" parent="android:Widget.Material.TextView">

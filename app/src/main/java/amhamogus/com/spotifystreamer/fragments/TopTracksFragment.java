@@ -14,8 +14,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
+import amhamogus.com.spotifystreamer.adapters.TrackListAdapter;
 import amhamogus.com.spotifystreamer.model.MyTracks;
-import amhamogus.com.spotifystreamer.model.TrackListAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 
 /**
@@ -27,8 +27,6 @@ import amhamogus.com.spotifystreamer.net.SpotifyRequest;
  * create an instance of this fragment.
  */
 public class TopTracksFragment extends Fragment {
-
-    String TAG = "TRACK-FRAGMENT";
 
     // Keys for arguments being passed to this fragment.
     private static final String ARG_PARAM1 = "ARTIST_ID";
@@ -75,7 +73,6 @@ public class TopTracksFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             artistID = getArguments().getString(ARG_PARAM1);
             artistName = getArguments().getString(ARG_PARAM2);

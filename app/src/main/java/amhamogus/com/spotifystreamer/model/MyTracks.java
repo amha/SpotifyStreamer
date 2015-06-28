@@ -77,5 +77,13 @@ public class MyTracks implements Parcelable {
     public String getAlbumName() {
         return this.albumName;
     }
+
+    /**
+     * Accessor method used to get the url an album art.
+     */
+    public String getAlbumImageUrl() {
+        return this.albumImageUrl;
+    }
 }
+
 

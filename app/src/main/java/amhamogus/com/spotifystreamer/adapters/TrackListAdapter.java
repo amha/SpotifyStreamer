@@ -1,4 +1,4 @@
-package amhamogus.com.spotifystreamer.model;
+package amhamogus.com.spotifystreamer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
+import amhamogus.com.spotifystreamer.model.MyTracks;
 
 /**
  * Maps an Track object to the top track row layout file.
@@ -49,10 +50,10 @@ public class TrackListAdapter extends ArrayAdapter<MyTracks> {
         // Setting Album Cover.
         ImageView albumCover = (ImageView) trackView.findViewById(R.id.trackListImage);
 
-        if (currentTrack.albumImageUrl.length() > 0) {
+        if (currentTrack.getAlbumImageUrl().length() > 0) {
             // Load album image if available
             Picasso.with(getContext())
-                    .load(currentTrack.albumImageUrl)
+                    .load(currentTrack.getAlbumImageUrl())
                     .into(albumCover);
         }
         return trackView;

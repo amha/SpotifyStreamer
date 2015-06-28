@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.activities.TopTracks;
 import amhamogus.com.spotifystreamer.model.MyArtist;
-import amhamogus.com.spotifystreamer.model.MyArtistAdapter;
+import amhamogus.com.spotifystreamer.adapters.MyArtistAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 
 /**
@@ -72,6 +72,25 @@ public class ArtistSearchFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.fragment_artist_search, container, false);
         listView = (ListView) fragmentView.findViewById(R.id.artistListView);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MyArtist selectedArtist = (MyArtist) parent.getItemAtPosition(position);
+
+                // Package selected artist's name and ID to send to top track activity.
+                Bundle bundle = new Bundle();
+                bundle.putString("ARTIST_NAME", selectedArtist.getName());
+                bundle.putString("ARTIST_ID", selectedArtist.getId());
+
+                Log.d("MAIN ACTIVITY", "ARTIST NAME = " + selectedArtist.getName());
+
+                Intent intent =
+                        new Intent(getActivity().getApplicationContext(), TopTracks.class);
+                intent.putExtras(bundle);
+                startActivity(intent, bundle);
+            }
+        });
+
         // Hide progress bar.
         progressBar = (ProgressBar) fragmentView.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
@@ -108,26 +127,8 @@ public class ArtistSearchFragment extends Fragment {
             myArtistAdapter =
                     new MyArtistAdapter(getActivity().getApplicationContext(), 0, artistList);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    MyArtist selectedArtist = (MyArtist) parent.getItemAtPosition(position);
-
-                    // Package selected artist's name and ID to send to top track activity.
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ARTIST_NAME", selectedArtist.getName());
-                    bundle.putString("ARTIST_ID", selectedArtist.getId());
-
-                    Log.d("MAIN ACTIVITY", "ARTIST NAME = " + selectedArtist.getName());
-
-                    Intent intent =
-                            new Intent(getActivity().getApplicationContext(), TopTracks.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent, bundle);
-                }
-            });
-            listView.setAdapter(myArtistAdapter);
         }
+        listView.setAdapter(myArtistAdapter);
         return fragmentView;
 
 

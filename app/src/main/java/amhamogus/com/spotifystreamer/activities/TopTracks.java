@@ -6,18 +6,14 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
-import java.util.ArrayList;
-
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.fragments.TopTracksFragment;
-import amhamogus.com.spotifystreamer.model.MyTracks;
 
 /**
  * List of Top Tracks for a given artist.
  */
 public class TopTracks extends Activity implements TopTracksFragment.OnFragmentInteractionListener {
 
-    protected ArrayList<MyTracks> TOP_TRACKS;
     protected TopTracksFragment topTracksFragment;
 
     @Override

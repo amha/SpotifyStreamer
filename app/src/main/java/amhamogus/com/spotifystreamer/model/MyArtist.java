@@ -64,4 +64,8 @@ public class MyArtist extends Artist implements Parcelable {
     public String getId() {
         return id;
     }
+
+    public String getImageURL() {
+        return imageURL;
+    }
 }

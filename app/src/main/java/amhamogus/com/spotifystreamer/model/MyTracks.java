@@ -21,6 +21,8 @@ public class MyTracks implements Parcelable {
     // URL value to album cover art.
     protected String albumImageUrl;
 
+    protected String trackID;
+
     public MyTracks(Track track) {
         if (track != null) {
             trackName = track.name;
@@ -32,6 +34,7 @@ public class MyTracks implements Parcelable {
             } else {
                 albumImageUrl = "";
             }
+            trackID = track.id;
         }
     }
 
@@ -45,6 +48,7 @@ public class MyTracks implements Parcelable {
         parcel.writeString(this.trackName);
         parcel.writeString(this.albumName);
         parcel.writeString(this.albumImageUrl);
+        parcel.writeString(this.trackID);
     }
 
     public static final Parcelable.Creator<MyTracks> CREATOR =
@@ -62,6 +66,7 @@ public class MyTracks implements Parcelable {
         this.trackName = parcel.readString();
         this.albumName = parcel.readString();
         this.albumImageUrl = parcel.readString();
+        this.trackID = parcel.readString();
     }
 
     /**
@@ -83,6 +88,13 @@ public class MyTracks implements Parcelable {
      */
     public String getAlbumImageUrl() {
         return this.albumImageUrl;
+    }
+
+    /**
+     * Accessor method used to get the url an album art.
+     */
+    public String getTrackID() {
+        return this.trackID;
     }
 }
 

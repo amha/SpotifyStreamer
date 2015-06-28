@@ -84,4 +84,25 @@ public class SpotifyRequest {
 
         return myTracks;
     }
+
+    public MyTracks getTrack(String trackID) {
+        Log.d("SPOTIFY GET TRACK", "TRACK ID = " + trackID);
+
+        SpotifyApi api = new SpotifyApi();
+        SpotifyService spotifyService = api.getService();
+        Track track = new Track();
+        try {
+            track = spotifyService.getTrack(trackID);
+        } catch (RetrofitError e) {
+            SpotifyError spotifyError = SpotifyError.fromRetrofitError(e);
+            spotifyError.printStackTrace();
+        }
+        MyTracks myTracks = new MyTracks(track);
+        return myTracks;
+    }
+
+    private SpotifyService setupService() {
+        SpotifyApi api = new SpotifyApi();
+        return api.getService();
+    }
 }

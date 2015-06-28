@@ -1,40 +1,29 @@
 package amhamogus.com.spotifystreamer.activities;
 
-import android.support.v7.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import amhamogus.com.spotifystreamer.R;
+import amhamogus.com.spotifystreamer.fragments.TrackPlaybackFragment;
 
-public class TrackPlayback extends AppCompatActivity {
+public class TrackPlayback extends Activity {
 
+    private TrackPlaybackFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_playback);
-    }
 
+        Intent intent = getIntent();
+        String trackID = intent.getStringExtra("trackID");
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_track_playback, menu);
-        return true;
-    }
+        fragment = TrackPlaybackFragment.newInstance(trackID);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.playback_fragment_holder, fragment, "tag");
+        transaction.commit();
     }
 }

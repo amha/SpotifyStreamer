@@ -2,18 +2,21 @@ package amhamogus.com.spotifystreamer.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
+import amhamogus.com.spotifystreamer.activities.TrackPlayback;
 import amhamogus.com.spotifystreamer.adapters.TrackListAdapter;
 import amhamogus.com.spotifystreamer.model.MyTracks;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
@@ -176,6 +179,19 @@ public class TopTracksFragment extends Fragment {
                     // Display the top tracks returned from from Spotify api.
                     adapter =
                             new TrackListAdapter(getActivity().getApplicationContext(), 0, tracks);
+                    mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            MyTracks myTracks = (MyTracks)parent.getItemAtPosition(position);
+                            Bundle args = new Bundle();
+                            args.putString("trackID", myTracks.getTrackID());
+
+                            Intent intent = new Intent(getActivity().getApplicationContext(), TrackPlayback.class);
+                            intent.putExtras(args);
+                            startActivity(intent);
+
+                        }
+                    });
                     mList.setAdapter(adapter);
                 }
             }

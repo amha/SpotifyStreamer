@@ -1,8 +1,8 @@
 package amhamogus.com.spotifystreamer.fragments;
 
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.model.MyTracks;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
@@ -19,32 +21,34 @@ import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class TrackPlaybackFragment extends Fragment {
+public class PlaybackFragment extends DialogFragment {
 
-    private final String TAG = "PLAYBACK FRAGMENT";
-
-    private static final String TRACK = "trackID";
+    private static final String TRACK_PARAM = "trackID";
+    private static final String TRACK_LIST_PARAM = "trackList";
     private static String currentTrackID;
 
     private TextView albumName;
     private TextView artistName;
     private TextView trackName;
     private ImageView trackImage;
+    private ArrayList<MyTracks> trackList;
 
-    public static TrackPlaybackFragment newInstance(String trackID) {
+    public static PlaybackFragment newInstance(String trackID, ArrayList<MyTracks> trackList) {
         currentTrackID = trackID;
         Log.d("PLAYBACK FRAGMENT", "NEW INSTANCE TRACK ID = " + currentTrackID);
 
-        TrackPlaybackFragment fragment = new TrackPlaybackFragment();
+        PlaybackFragment fragment = new PlaybackFragment();
 
         Bundle args = new Bundle();
-        args.putString(TRACK, trackID);
-        fragment.setArguments(args);
+        args.putString(TRACK_PARAM, trackID);
+        args.putParcelableArrayList(TRACK_LIST_PARAM, trackList);
 
+        Log.d("PLAYBACK_FRAGMENT", "Track List Size:"+ trackList.get(0).toString());
+        fragment.setArguments(args);
         return fragment;
     }
 
-    public TrackPlaybackFragment() {
+    public PlaybackFragment() {
     }
 
     @Override

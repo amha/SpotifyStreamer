@@ -19,7 +19,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
-import amhamogus.com.spotifystreamer.activities.TopTracks;
+import amhamogus.com.spotifystreamer.activities.TopTracksActivity;
 import amhamogus.com.spotifystreamer.model.MyArtist;
 import amhamogus.com.spotifystreamer.adapters.MyArtistAdapter;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
@@ -35,7 +35,6 @@ import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 public class ArtistSearchFragment extends Fragment {
 
     protected ArrayList<MyArtist> artistList;
-
     private ListView listView;
 
     /**
@@ -44,9 +43,6 @@ public class ArtistSearchFragment extends Fragment {
     protected MyArtistAdapter myArtistAdapter;
 
     private ProgressBar progressBar;
-
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -85,7 +81,7 @@ public class ArtistSearchFragment extends Fragment {
                 Log.d("MAIN ACTIVITY", "ARTIST NAME = " + selectedArtist.getName());
 
                 Intent intent =
-                        new Intent(getActivity().getApplicationContext(), TopTracks.class);
+                        new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent, bundle);
             }
@@ -135,7 +131,6 @@ public class ArtistSearchFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -230,10 +225,8 @@ public class ArtistSearchFragment extends Fragment {
                         bundle.putString("ARTIST_NAME", selectedArtist.getName());
                         bundle.putString("ARTIST_ID", selectedArtist.getId());
 
-                        Log.d("MAIN ACTIVITY", "ARTIST NAME = " + selectedArtist.getName());
-
                         Intent intent =
-                                new Intent(getActivity().getApplicationContext(), TopTracks.class);
+                                new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent, bundle);
                     }

@@ -16,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
-import amhamogus.com.spotifystreamer.activities.TrackPlayback;
+import amhamogus.com.spotifystreamer.activities.PlaybackActivity;
 import amhamogus.com.spotifystreamer.adapters.TrackListAdapter;
 import amhamogus.com.spotifystreamer.model.MyTracks;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
@@ -182,11 +182,12 @@ public class TopTracksFragment extends Fragment {
                     mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            MyTracks myTracks = (MyTracks)parent.getItemAtPosition(position);
+                            MyTracks myTracks = (MyTracks) parent.getItemAtPosition(position);
                             Bundle args = new Bundle();
                             args.putString("trackID", myTracks.getTrackID());
+                            args.putParcelableArrayList("trackList",topTracks);
 
-                            Intent intent = new Intent(getActivity().getApplicationContext(), TrackPlayback.class);
+                            Intent intent = new Intent(getActivity().getApplicationContext(), PlaybackActivity.class);
                             intent.putExtras(args);
                             startActivity(intent);
 

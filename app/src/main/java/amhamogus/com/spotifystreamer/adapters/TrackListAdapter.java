@@ -13,14 +13,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
-import amhamogus.com.spotifystreamer.model.MyTracks;
+import amhamogus.com.spotifystreamer.model.MyTrack;
 
 /**
  * Maps an Track object to the top track row layout file.
  */
-public class TrackListAdapter extends ArrayAdapter<MyTracks> {
+public class TrackListAdapter extends ArrayAdapter<MyTrack> {
 
-    public TrackListAdapter(Context context, int resourceID, ArrayList<MyTracks> tracks) {
+    public TrackListAdapter(Context context, int resourceID, ArrayList<MyTrack> tracks) {
         super(context, resourceID, tracks);
     }
 
@@ -37,7 +37,7 @@ public class TrackListAdapter extends ArrayAdapter<MyTracks> {
         }
 
         // Get track data from the List<Tracks> at position.
-        MyTracks currentTrack = getItem(position);
+        MyTrack currentTrack = getItem(position);
 
         // Setting the name of the track.
         TextView trackName = (TextView) trackView.findViewById(R.id.trackTitle);

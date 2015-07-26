@@ -24,12 +24,17 @@
         </activity>
         <activity
             android:name=".activities.TopTracksActivity"
-            android:label="@string/title_activity_top_tracks">
+            android:label="@string/title_activity_top_tracks" >
         </activity>
         <activity
             android:name=".activities.PlaybackActivity"
-            android:label="@string/title_activity_track_playback">
+            android:label="@string/title_activity_track_playback" >
         </activity>
+
+        <service
+            android:name=".activities.PlaybackService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

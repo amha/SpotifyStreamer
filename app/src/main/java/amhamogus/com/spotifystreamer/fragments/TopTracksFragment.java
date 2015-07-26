@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.activities.PlaybackActivity;
 import amhamogus.com.spotifystreamer.adapters.TrackListAdapter;
-import amhamogus.com.spotifystreamer.model.MyTracks;
+import amhamogus.com.spotifystreamer.model.MyTrack;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 
 /**
@@ -40,7 +40,7 @@ public class TopTracksFragment extends Fragment {
     private String artistName;
 
     // Data structure that will populate the listview.
-    private ArrayList<MyTracks> topTracks;
+    private ArrayList<MyTrack> topTracks;
 
     private TrackListAdapter adapter;
 
@@ -155,19 +155,19 @@ public class TopTracksFragment extends Fragment {
     /**
      * Helper class that requests top tracks from Spotify.
      */
-    private class TopTrackWorker extends AsyncTask<String, String, ArrayList<MyTracks>> {
+    private class TopTrackWorker extends AsyncTask<String, String, ArrayList<MyTrack>> {
 
         SpotifyRequest topTrackRequest;
 
         @Override
-        protected ArrayList<MyTracks> doInBackground(String... strings) {
+        protected ArrayList<MyTrack> doInBackground(String... strings) {
             topTrackRequest = new SpotifyRequest();
             topTracks = topTrackRequest.searchTopTracks(strings[0]);
             return topTracks;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<MyTracks> tracks) {
+        protected void onPostExecute(ArrayList<MyTrack> tracks) {
 
             if (tracks != null) {
                 if (tracks.size() == 0) {
@@ -182,9 +182,9 @@ public class TopTracksFragment extends Fragment {
                     mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            MyTracks myTracks = (MyTracks) parent.getItemAtPosition(position);
+                            MyTrack myTrack = (MyTrack) parent.getItemAtPosition(position);
                             Bundle args = new Bundle();
-                            args.putString("trackID", myTracks.getTrackID());
+                            args.putString("trackID", myTrack.getTrackID());
                             args.putParcelableArrayList("trackList",topTracks);
 
                             Intent intent = new Intent(getActivity().getApplicationContext(), PlaybackActivity.class);

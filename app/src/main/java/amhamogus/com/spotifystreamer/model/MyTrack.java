@@ -10,7 +10,7 @@ import kaaes.spotify.webapi.android.models.Track;
  *
  * @author Amha Mogus
  */
-public class MyTracks implements Parcelable {
+public class MyTrack implements Parcelable {
 
     // The name of the track or song.
     protected String trackName;
@@ -21,9 +21,13 @@ public class MyTracks implements Parcelable {
     // URL value to album cover art.
     protected String albumImageUrl;
 
+    // URL to audio preview of a track.
+    protected String previewURL;
+
+    // Spotify's ID number for a track.
     protected String trackID;
 
-    public MyTracks(Track track) {
+    public MyTrack(Track track) {
         if (track != null) {
             trackName = track.name;
             albumName = track.album.name;
@@ -34,6 +38,7 @@ public class MyTracks implements Parcelable {
             } else {
                 albumImageUrl = "";
             }
+            previewURL = track.preview_url;
             trackID = track.id;
         }
     }
@@ -51,18 +56,18 @@ public class MyTracks implements Parcelable {
         parcel.writeString(this.trackID);
     }
 
-    public static final Parcelable.Creator<MyTracks> CREATOR =
-            new Parcelable.Creator<MyTracks>() {
-                public MyTracks createFromParcel(Parcel parcel) {
-                    return new MyTracks(parcel);
+    public static final Parcelable.Creator<MyTrack> CREATOR =
+            new Parcelable.Creator<MyTrack>() {
+                public MyTrack createFromParcel(Parcel parcel) {
+                    return new MyTrack(parcel);
                 }
 
-                public MyTracks[] newArray(int size) {
-                    return new MyTracks[size];
+                public MyTrack[] newArray(int size) {
+                    return new MyTrack[size];
                 }
             };
 
-    private MyTracks(Parcel parcel) {
+    private MyTrack(Parcel parcel) {
         this.trackName = parcel.readString();
         this.albumName = parcel.readString();
         this.albumImageUrl = parcel.readString();
@@ -95,6 +100,13 @@ public class MyTracks implements Parcelable {
      */
     public String getTrackID() {
         return this.trackID;
+    }
+
+    /**
+     * Accessor method used to get audio preview of a track.
+     */
+    public String getPreviewURL() {
+        return this.previewURL;
     }
 }
 

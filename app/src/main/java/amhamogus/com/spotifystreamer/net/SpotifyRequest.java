@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import amhamogus.com.spotifystreamer.model.MyArtist;
-import amhamogus.com.spotifystreamer.model.MyTracks;
+import amhamogus.com.spotifystreamer.model.MyTrack;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyError;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -55,7 +55,7 @@ public class SpotifyRequest {
      *
      * @return Tracks - Returns a list
      */
-    public ArrayList<MyTracks> searchTopTracks(String artistID) {
+    public ArrayList<MyTrack> searchTopTracks(String artistID) {
 
         Tracks returnedTracks;
 
@@ -67,13 +67,13 @@ public class SpotifyRequest {
         map.put("id", artistID);
         map.put("country", "US");
 
-        ArrayList<MyTracks> myTracks = new ArrayList<>();
+        ArrayList<MyTrack> myTracks = new ArrayList<>();
 
         try {
             returnedTracks = spotifyService.getArtistTopTrack(artistID, map);
 
             for (Track track : returnedTracks.tracks) {
-                myTracks.add(new MyTracks(track));
+                myTracks.add(new MyTrack(track));
             }
         } catch (RetrofitError error) {
             SpotifyError spotifyError = SpotifyError.fromRetrofitError(error);
@@ -85,7 +85,7 @@ public class SpotifyRequest {
         return myTracks;
     }
 
-    public MyTracks getTrack(String trackID) {
+    public MyTrack getTrack(String trackID) {
         Log.d("SPOTIFY GET TRACK", "TRACK ID = " + trackID);
 
         SpotifyApi api = new SpotifyApi();
@@ -97,8 +97,8 @@ public class SpotifyRequest {
             SpotifyError spotifyError = SpotifyError.fromRetrofitError(e);
             spotifyError.printStackTrace();
         }
-        MyTracks myTracks = new MyTracks(track);
-        return myTracks;
+        MyTrack myTrack = new MyTrack(track);
+        return myTrack;
     }
 
     private SpotifyService setupService() {

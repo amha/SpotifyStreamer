@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.fragments.TopTracksFragment;
-import amhamogus.com.spotifystreamer.model.MyTracks;
+import amhamogus.com.spotifystreamer.model.MyTrack;
 
 /**
  * List of Top Tracks for a given artist.
@@ -18,7 +18,7 @@ import amhamogus.com.spotifystreamer.model.MyTracks;
 public class TopTracksActivity extends Activity implements TopTracksFragment.OnFragmentInteractionListener {
 
     protected TopTracksFragment topTracksFragment;
-    protected ArrayList<MyTracks> topTracks;
+    protected ArrayList<MyTrack> topTracks;
     protected int trackIndex;
 
     @Override

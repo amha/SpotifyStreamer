@@ -162,6 +162,7 @@ public class TopTracksFragment extends Fragment {
         @Override
         protected ArrayList<MyTrack> doInBackground(String... strings) {
             topTrackRequest = new SpotifyRequest();
+
             topTracks = topTrackRequest.searchTopTracks(strings[0]);
             return topTracks;
         }
@@ -185,7 +186,8 @@ public class TopTracksFragment extends Fragment {
                             MyTrack myTrack = (MyTrack) parent.getItemAtPosition(position);
                             Bundle args = new Bundle();
                             args.putString("trackID", myTrack.getTrackID());
-                            args.putParcelableArrayList("trackList",topTracks);
+                            args.putParcelableArrayList("trackList", topTracks);
+                            args.putInt("playListNumber", position);
 
                             Intent intent = new Intent(getActivity().getApplicationContext(), PlaybackActivity.class);
                             intent.putExtras(args);

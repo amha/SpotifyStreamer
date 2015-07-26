@@ -22,8 +22,6 @@ public class PlaybackService extends IntentService
         MediaPlayer.OnCompletionListener {
 
     private final String TAG = "debug-am";
-//    private final String SAMPLE_URL =
-//            "https://p.scdn.co/mp3-preview/717be5c847a3b61a51cafe7f3703811b9af15d25";
 
     private int seekTime = -1;
     private MediaPlayer mediaPlayer;
@@ -37,6 +35,12 @@ public class PlaybackService extends IntentService
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
+
+            // If a user decides to play another track during active playback,
+            // stop the current track before starting the next track.
+            if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+            }
 
             String URL = intent.getStringExtra("PREVIEW");
             Log.d("PLAYBACK", "URL: " + URL);

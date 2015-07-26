@@ -69,6 +69,7 @@
             android:layout_marginRight="@dimen/playback_media_control_margin"
             android:layout_toLeftOf="@+id/imageButton"
             android:layout_toStartOf="@+id/imageButton"
+            android:id="@+id/previous_track_button"
             android:src="@android:drawable/ic_media_previous"/>
 
         <ImageButton
@@ -87,7 +88,17 @@
             android:layout_marginStart="@dimen/playback_media_control_margin"
             android:layout_toEndOf="@+id/imageButton"
             android:layout_toRightOf="@+id/imageButton"
+            android:id="@+id/next_track_button"
             android:src="@android:drawable/ic_media_next"/>
+
+        <ImageButton
+            android:id="@+id/pause_button"
+            android:layout_width="@dimen/media_player_control"
+            android:layout_height="@dimen/media_player_control"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_media_pause"/>
     </RelativeLayout>
 
 </RelativeLayout>

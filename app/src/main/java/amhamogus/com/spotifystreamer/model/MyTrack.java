@@ -13,6 +13,9 @@ import kaaes.spotify.webapi.android.models.Track;
 public class MyTrack implements Parcelable {
 
     // The name of the track or song.
+    protected String artistName;
+
+    // The name of the track or song.
     protected String trackName;
 
     // The name of the album the track appears on.
@@ -31,6 +34,7 @@ public class MyTrack implements Parcelable {
         if (track != null) {
             trackName = track.name;
             albumName = track.album.name;
+            artistName = track.artists.get(0).name;
 
             // If we don't have an image url, use a default image.
             if (track.album.images.size() > 0) {
@@ -38,6 +42,7 @@ public class MyTrack implements Parcelable {
             } else {
                 albumImageUrl = "";
             }
+
             previewURL = track.preview_url;
             trackID = track.id;
         }
@@ -50,10 +55,12 @@ public class MyTrack implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int size) {
+        parcel.writeString(this.artistName);
         parcel.writeString(this.trackName);
         parcel.writeString(this.albumName);
         parcel.writeString(this.albumImageUrl);
         parcel.writeString(this.trackID);
+        parcel.writeString(this.previewURL);
     }
 
     public static final Parcelable.Creator<MyTrack> CREATOR =
@@ -68,10 +75,12 @@ public class MyTrack implements Parcelable {
             };
 
     private MyTrack(Parcel parcel) {
+        this.artistName = parcel.readString();
         this.trackName = parcel.readString();
         this.albumName = parcel.readString();
         this.albumImageUrl = parcel.readString();
         this.trackID = parcel.readString();
+        this.previewURL = parcel.readString();
     }
 
     /**
@@ -107,6 +116,13 @@ public class MyTrack implements Parcelable {
      */
     public String getPreviewURL() {
         return this.previewURL;
+    }
+    
+    /**
+     * Accessor method used to get audio preview of a track.
+     */
+    public String getArtistName() {
+        return this.artistName;
     }
 }
 

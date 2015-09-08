@@ -39,7 +39,7 @@ public class PlaybackService extends IntentService
             // If a user decides to play another track during active playback,
             // stop the current track before starting the next track.
             if (mediaPlayer != null) {
-                    mediaPlayer.stop();
+                mediaPlayer.stop();
             }
 
             String URL = intent.getStringExtra("PREVIEW");
@@ -51,6 +51,8 @@ public class PlaybackService extends IntentService
                 mediaPlayer.setOnPreparedListener(this);
                 mediaPlayer.setOnCompletionListener(this);
                 mediaPlayer.prepareAsync();
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -65,6 +67,16 @@ public class PlaybackService extends IntentService
             seekTime = -1;
         }
         mediaPlayer.start();
+
+        Intent playbackIntent = new Intent();
+        playbackIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        playbackIntent.setAction("amhamogus.com.spotifystreamer.Tomato");
+        playbackIntent.putExtra("Foo", "Bar");
+        sendBroadcast(playbackIntent);
+    }
+
+    public void setSeekTime(int seekTime) {
+        mediaPlayer.seekTo(seekTime);
     }
 
     @Override
@@ -100,5 +112,15 @@ public class PlaybackService extends IntentService
     public void pause() {
         seekTime = mediaPlayer.getCurrentPosition();
         mediaPlayer.pause();
+    }
+
+    public void stop() {
+        mediaPlayer.stop();
+    }
+
+    public void seekTime(int seekTime) {
+        if (seekTime < 0 || seekTime > 31) {
+            mediaPlayer.seekTo(seekTime);
+        }
     }
 }

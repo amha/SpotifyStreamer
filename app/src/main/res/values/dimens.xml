@@ -18,6 +18,8 @@
 
     <!-- Track Playback -->
     <dimen name="media_player_control">70dp</dimen>
+    <dimen name="media_player_control_small">50dp</dimen>
     <dimen name="playback_margin">10dp</dimen>
     <dimen name="playback_media_control_margin">33dp</dimen>
+
 </resources>

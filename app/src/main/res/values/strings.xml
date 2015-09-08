@@ -26,4 +26,6 @@
     <string name="playback_artist_name">Artist Name</string>
     <string name="playback_album_name">Album Name</string>
     <string name="playback_track_duration">Duration</string>
+    <string name="playback_default_value">0</string>
+    <string name="playback_track_length">30</string>
 </resources>

@@ -34,7 +34,7 @@ public class PlaybackActivity extends FragmentActivity implements PlaybackFragme
         trackList = intent.getParcelableArrayListExtra("trackList");
         int trackNumber = intent.getIntExtra("playListNumber", 0);
 
-        Log.d("PLAYBACK", "PLAYBACK ACTIVITY = "+ trackNumber);
+        Log.d("PLAYBACK", "PLAYBACK ACTIVITY = " + trackNumber);
 
         fragment = PlaybackFragment.newInstance(trackID, trackList, trackNumber);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -78,11 +78,22 @@ public class PlaybackActivity extends FragmentActivity implements PlaybackFragme
 
         mService.onHandleIntent(intent);
     }
-    public void pauseTrack(){
-        if(mService.isMediaPlaying()){
+
+    public void pauseTrack() {
+        if (mService.isMediaPlaying()) {
             mService.pause();
         }
     }
+
+    public void stopTrack(){
+        if (mService.isMediaPlaying()) {
+            mService.stop();
+        }
+    }
+    public void seekTo(int seekPosition) {
+        mService.setSeekTime(seekPosition);
+    }
+
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -36,11 +37,16 @@ public class PlaybackActivity extends FragmentActivity implements PlaybackFragme
 
         Log.d("PLAYBACK", "PLAYBACK ACTIVITY = " + trackNumber);
 
-        fragment = PlaybackFragment.newInstance(trackID, trackList, trackNumber);
+        if (savedInstanceState != null) {
+            fragment = (PlaybackFragment) getSupportFragmentManager().findFragmentByTag("tag");
+        } else {
+            fragment = PlaybackFragment.newInstance(trackID, trackList, trackNumber);
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.playback_fragment_holder, fragment, "tag");
+        transaction.replace(R.id.playback_fragment_holder, fragment, "tag");
         transaction.commit();
     }
+
 
     @Override
     protected void onStart() {
@@ -85,11 +91,12 @@ public class PlaybackActivity extends FragmentActivity implements PlaybackFragme
         }
     }
 
-    public void stopTrack(){
+    public void stopTrack() {
         if (mService.isMediaPlaying()) {
             mService.stop();
         }
     }
+
     public void seekTo(int seekPosition) {
         mService.setSeekTime(seekPosition);
     }

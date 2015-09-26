@@ -78,8 +78,6 @@ public class ArtistSearchFragment extends Fragment {
                 bundle.putString("ARTIST_NAME", selectedArtist.getName());
                 bundle.putString("ARTIST_ID", selectedArtist.getId());
 
-                Log.d("MAIN ACTIVITY", "ARTIST NAME = " + selectedArtist.getName());
-
                 Intent intent =
                         new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
                 intent.putExtras(bundle);
@@ -122,9 +120,10 @@ public class ArtistSearchFragment extends Fragment {
             artistList = savedInstanceState.getParcelableArrayList("artists");
             myArtistAdapter =
                     new MyArtistAdapter(getActivity().getApplicationContext(), 0, artistList);
-
         }
-        listView.setAdapter(myArtistAdapter);
+        if (artistList != null) {
+            listView.setAdapter(myArtistAdapter);
+        }
         return fragmentView;
 
 

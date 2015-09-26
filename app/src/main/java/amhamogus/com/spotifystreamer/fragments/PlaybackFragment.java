@@ -72,7 +72,7 @@ public class PlaybackFragment extends DialogFragment {
         args.putParcelableArrayList(TRACK_LIST_PARAM, trackList);
         args.putInt(TRACK_NUMBER_PARAM, position);
         fragment.setArguments(args);
-        fragment.setRetainInstance(true);
+    //    fragment.setRetainInstance(true);
         return fragment;
     }
 
@@ -131,7 +131,7 @@ public class PlaybackFragment extends DialogFragment {
 
         // Seekbar interactions.
         seekBar = (SeekBar) fragment.findViewById(R.id.seek_bar);
-        seekBar.setSaveEnabled(false);
+        seekBar.setSaveEnabled(true);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -156,7 +156,6 @@ public class PlaybackFragment extends DialogFragment {
         previousButton = (ImageButton) fragment.findViewById(R.id.previous_track_button);
 
         pauseButton.setVisibility(View.INVISIBLE);
-
         updateDisplay(currentTrackID);
 
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -197,6 +196,7 @@ public class PlaybackFragment extends DialogFragment {
 
                 currentTrack = trackList.get(trackNumber);
                 updateDisplay(trackNumber + "");
+                mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
 
@@ -213,8 +213,10 @@ public class PlaybackFragment extends DialogFragment {
                 } else {
                     trackNumber -= 1;
                 }
+                seekBar.setProgress(0);
                 currentTrack = trackList.get(trackNumber);
                 updateDisplay(trackNumber + "");
+                mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
         return fragment;
@@ -242,6 +244,7 @@ public class PlaybackFragment extends DialogFragment {
                     + " must implement PlaybackEventListener");
         }
     }
+
 
     private void updateDisplay(String currentTrackID) {
         if (currentTrackID != null) {

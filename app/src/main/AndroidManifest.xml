@@ -27,12 +27,12 @@
             android:label="@string/title_activity_top_tracks" >
         </activity>
         <activity
-            android:name=".activities.PlaybackActivity"
+            android:name=".PlaybackActivity"
             android:label="@string/title_activity_track_playback" >
         </activity>
 
         <service
-            android:name=".activities.PlaybackService"
+            android:name=".PlaybackService"
             android:exported="false" >
         </service>
     </application>

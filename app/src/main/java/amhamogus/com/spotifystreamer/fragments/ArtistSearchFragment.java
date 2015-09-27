@@ -78,10 +78,7 @@ public class ArtistSearchFragment extends Fragment {
                 bundle.putString("ARTIST_NAME", selectedArtist.getName());
                 bundle.putString("ARTIST_ID", selectedArtist.getId());
 
-                Intent intent =
-                        new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent, bundle);
+                onButtonPressed(bundle);
             }
         });
 
@@ -130,9 +127,9 @@ public class ArtistSearchFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Bundle bundle) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(bundle);
         }
     }
 
@@ -171,7 +168,7 @@ public class ArtistSearchFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(Bundle bundle);
     }
 
     /**
@@ -224,10 +221,11 @@ public class ArtistSearchFragment extends Fragment {
                         bundle.putString("ARTIST_NAME", selectedArtist.getName());
                         bundle.putString("ARTIST_ID", selectedArtist.getId());
 
-                        Intent intent =
-                                new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
-                        intent.putExtras(bundle);
-                        startActivity(intent, bundle);
+                        onButtonPressed(bundle);
+//                        Intent intent =
+//                                new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
+//                        intent.putExtras(bundle);
+//                        startActivity(intent, bundle);
                     }
                 });
                 listView.setAdapter(myArtistAdapter);

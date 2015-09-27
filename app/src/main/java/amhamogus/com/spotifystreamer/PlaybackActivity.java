@@ -1,24 +1,26 @@
-package amhamogus.com.spotifystreamer.activities;
+package amhamogus.com.spotifystreamer;
 
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import amhamogus.com.spotifystreamer.PlaybackService;
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.fragments.PlaybackFragment;
 import amhamogus.com.spotifystreamer.model.MyTrack;
 
-public class PlaybackActivity extends FragmentActivity implements PlaybackFragment.PlaybackEventListener {
+public class PlaybackActivity extends Activity implements PlaybackFragment.PlaybackEventListener {
 
     private PlaybackService mService;
     private Boolean isBound = false;
@@ -35,15 +37,13 @@ public class PlaybackActivity extends FragmentActivity implements PlaybackFragme
         trackList = intent.getParcelableArrayListExtra("trackList");
         int trackNumber = intent.getIntExtra("playListNumber", 0);
 
-        Log.d("PLAYBACK", "PLAYBACK ACTIVITY = " + trackNumber);
-
         if (savedInstanceState != null) {
-            fragment = (PlaybackFragment) getSupportFragmentManager().findFragmentByTag("tag");
+            fragment = (PlaybackFragment) getFragmentManager().findFragmentByTag("playback_fragment");
         } else {
             fragment = PlaybackFragment.newInstance(trackID, trackList, trackNumber);
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.playback_fragment_holder, fragment, "tag");
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.playback_fragment_holder, fragment, "playback_fragment");
         transaction.commit();
     }
 

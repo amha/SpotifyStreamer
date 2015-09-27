@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
+import amhamogus.com.spotifystreamer.PlaybackActivity;
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.fragments.TopTracksFragment;
 import amhamogus.com.spotifystreamer.model.MyTrack;
@@ -15,7 +16,7 @@ import amhamogus.com.spotifystreamer.model.MyTrack;
 /**
  * List of Top Tracks for a given artist.
  */
-public class TopTracksActivity extends Activity implements TopTracksFragment.OnFragmentInteractionListener {
+public class TopTracksActivity extends Activity implements TopTracksFragment.OnTopTrackSelectedListener{
 
     protected TopTracksFragment topTracksFragment;
     protected ArrayList<MyTrack> topTracks;
@@ -56,7 +57,9 @@ public class TopTracksActivity extends Activity implements TopTracksFragment.OnF
      * Helper class that requests top tracks from Spotify.
      */
 
-    public void onFragmentInteraction(String songName) {
-        return;
+    public void onTopTrackSelected(Bundle trackDetails) {
+        Intent intent = new Intent(getApplicationContext(), PlaybackActivity.class);
+        intent.putExtras(trackDetails);
+        startActivity(intent);
     }
 }

@@ -16,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import amhamogus.com.spotifystreamer.R;
-import amhamogus.com.spotifystreamer.activities.PlaybackActivity;
+import amhamogus.com.spotifystreamer.PlaybackActivity;
 import amhamogus.com.spotifystreamer.adapters.TrackListAdapter;
 import amhamogus.com.spotifystreamer.model.MyTrack;
 import amhamogus.com.spotifystreamer.net.SpotifyRequest;
@@ -48,7 +48,7 @@ public class TopTracksFragment extends Fragment {
     private ListView mList;
 
     // TODO: Part 2
-    private OnFragmentInteractionListener mListener;
+    private OnTopTrackSelectedListener mListener;
 
     Parcelable fragmentState;
 
@@ -113,9 +113,9 @@ public class TopTracksFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onTrackSelected(String songName) {
+    public void onTrackSelected(Bundle trackDetails) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(songName);
+            mListener.onTopTrackSelected(trackDetails);
         }
     }
 
@@ -123,7 +123,7 @@ public class TopTracksFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnTopTrackSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -147,9 +147,9 @@ public class TopTracksFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnTopTrackSelectedListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String songName);
+        public void onTopTrackSelected(Bundle trackDetails);
     }
 
     /**
@@ -189,10 +189,7 @@ public class TopTracksFragment extends Fragment {
                             args.putParcelableArrayList("trackList", topTracks);
                             args.putInt("playListNumber", position);
 
-                            Intent intent = new Intent(getActivity().getApplicationContext(), PlaybackActivity.class);
-                            intent.putExtras(args);
-                            startActivity(intent);
-
+                            onTrackSelected(args);
                         }
                     });
                     mList.setAdapter(adapter);

@@ -1,18 +1,18 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+  >
 
     <ImageView
         android:id="@+id/playback_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_album_art"/>
+        android:src="@drawable/default_album_art"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
 
 
     <TextView
@@ -20,22 +20,11 @@
         style="@style/primaryText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/playback_image"
         android:gravity="center"
-        android:text="@string/playback_artist_name"/>
-
-    <SeekBar
-        android:id="@+id/seek_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/playback_album_name"
+        android:text="@string/playback_artist_name"
+        android:layout_below="@+id/playback_image"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="21dp"
-        android:indeterminate="false"
-        android:max="30"/>
+        android:layout_alignParentStart="true"/>
 
 
     <TextView
@@ -43,29 +32,31 @@
         style="@style/primaryText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:gravity="center"
-        android:text="@string/playback_track_title"/>
+        android:text="@string/playback_track_title"
+        android:layout_below="@+id/playback_album_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <TextView
         android:id="@+id/playback_album_name"
         style="@style/secondaryText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/playback_track_name"
-        android:layout_alignParentLeft="true"
         android:gravity="center"
-        android:text="@string/playback_album_name"/>
+        android:text="@string/playback_album_name"
+        android:layout_below="@+id/playback_image"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="22dp"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp">
+        android:layout_alignParentStart="true">
 
         <ImageButton
             android:id="@+id/previous_track_button"
@@ -115,27 +106,39 @@
             android:src="@drawable/pause_button"/>
 
 
-        <TextView
-            android:id="@+id/playback_seek_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/playback_album_name"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="21dp"
-            android:layout_marginRight="21dp"
-            android:text="@string/playback_default_value"/>
-
-        <TextView
-            android:id="@+id/playback_length"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/playback_seek_value"
-            android:layout_marginLeft="179dp"
-            android:layout_marginStart="179dp"
-            android:layout_toEndOf="@+id/playback_image"
-            android:layout_toRightOf="@+id/playback_image"
-            android:text="@string/playback_track_length"/>
-
     </RelativeLayout>
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="30"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="17dp"/>
+
+    <TextView
+        android:id="@+id/playback_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_track_length"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp"/>
+
+    <TextView
+        android:id="@+id/playback_seek_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_default_value"
+        android:layout_alignBaseline="@+id/playback_length"
+        android:layout_alignBottom="@+id/playback_length"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"/>
 </RelativeLayout>

@@ -197,6 +197,8 @@ public class PlaybackFragment extends DialogFragment {
 
                 currentTrack = trackList.get(trackNumber);
                 updateDisplay(trackNumber + "");
+                playButton.setVisibility(View.INVISIBLE);
+                pauseButton.setVisibility(View.VISIBLE);
                 mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
@@ -214,9 +216,12 @@ public class PlaybackFragment extends DialogFragment {
                 } else {
                     trackNumber -= 1;
                 }
+
                 seekBar.setProgress(0);
                 currentTrack = trackList.get(trackNumber);
                 updateDisplay(trackNumber + "");
+                playButton.setVisibility(View.INVISIBLE);
+                pauseButton.setVisibility(View.VISIBLE);
                 mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
@@ -246,6 +251,13 @@ public class PlaybackFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance()) {
+            getDialog().setDismissMessage(null);
+        }
+        super.onDestroyView();
+    }
 
     private void updateDisplay(String currentTrackID) {
         if (currentTrackID != null) {

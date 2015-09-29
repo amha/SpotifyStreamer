@@ -101,6 +101,16 @@ public class PlaybackActivity extends Activity implements PlaybackFragment.Playb
         mService.setSeekTime(seekPosition);
     }
 
+    @Override
+    public boolean isMediaplayerNull(){
+        if(mService.isMediaplayerNull()){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

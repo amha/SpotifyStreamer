@@ -73,7 +73,7 @@ public class PlaybackFragment extends DialogFragment {
         args.putParcelableArrayList(TRACK_LIST_PARAM, trackList);
         args.putInt(TRACK_NUMBER_PARAM, position);
         fragment.setArguments(args);
-    //    fragment.setRetainInstance(true);
+        //    fragment.setRetainInstance(true);
         return fragment;
     }
 
@@ -96,12 +96,9 @@ public class PlaybackFragment extends DialogFragment {
                     @Override
                     public void run() {
                         int seekValue = seekBar.getProgress();
-                        if (seekValue < 31) {
+                        if (seekValue < 30) {
                             seekBar.setProgress(seekValue + 1);
                             playbackSeekValue.setText(seekBar.getProgress() + "");
-                        } else {
-                            //Seek value == 30
-                            //Send Stop message to playback service
                         }
                         handler.postDelayed(this, 1000);
                     }
@@ -140,8 +137,6 @@ public class PlaybackFragment extends DialogFragment {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Touch detected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -159,6 +154,10 @@ public class PlaybackFragment extends DialogFragment {
         pauseButton.setVisibility(View.INVISIBLE);
         updateDisplay(currentTrackID);
 
+//        if(seekBar.getProgress() == 0) {
+//            mCallback.passTrackPreview(currentTrack.getPreviewURL());
+//        }
+
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,6 +166,7 @@ public class PlaybackFragment extends DialogFragment {
                 mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
+        playButton.callOnClick();
 
         pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,8 +181,10 @@ public class PlaybackFragment extends DialogFragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Stop current track
-                mCallback.stopTrack();
+                if(mCallback.isMediaplayerNull() == false) {
+                    // Stop current track
+                    mCallback.stopTrack();
+                }
                 handler.removeCallbacks(runnable);
                 playbackSeekValue.setText(0 + "");
                 seekBar.setProgress(0);
@@ -197,6 +199,7 @@ public class PlaybackFragment extends DialogFragment {
 
                 currentTrack = trackList.get(trackNumber);
                 updateDisplay(trackNumber + "");
+
                 playButton.setVisibility(View.INVISIBLE);
                 pauseButton.setVisibility(View.VISIBLE);
                 mCallback.passTrackPreview(currentTrack.getPreviewURL());
@@ -207,7 +210,11 @@ public class PlaybackFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // Stop current track
-                mCallback.stopTrack();
+                if(mCallback.isMediaplayerNull() == false) {
+                    mCallback.stopTrack();
+                }
+                handler.removeCallbacks(runnable);
+                playbackSeekValue.setText(0 + "");
 
                 // If we're at the start of the top 10 track list set the
                 // track number to last last item on the track list.
@@ -230,7 +237,7 @@ public class PlaybackFragment extends DialogFragment {
 
     @Override
     public void onPause() {
-        if(mBroadcastReceiver != null) {
+        if (mBroadcastReceiver != null) {
             getActivity().unregisterReceiver(mBroadcastReceiver);
             mBroadcastReceiver = null;
         }
@@ -285,6 +292,8 @@ public class PlaybackFragment extends DialogFragment {
         public void seekTo(int seekPosition);
 
         public void stopTrack();
+
+        public boolean isMediaplayerNull();
     }
 
 }

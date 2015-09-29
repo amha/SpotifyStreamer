@@ -109,6 +109,15 @@ public class PlaybackService extends IntentService
         return mediaPlayer.isPlaying();
     }
 
+    public boolean isMediaplayerNull(){
+        if(mediaPlayer == null){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public void pause() {
         seekTime = mediaPlayer.getCurrentPosition();
         mediaPlayer.pause();

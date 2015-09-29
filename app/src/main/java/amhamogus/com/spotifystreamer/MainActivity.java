@@ -147,13 +147,21 @@ public class MainActivity extends Activity implements ArtistSearchFragment.OnFra
     }
 
     public void stopTrack() {
-        if (mService.isMediaPlaying()) {
             mService.stop();
-        }
     }
 
     public void seekTo(int seekPosition) {
         mService.setSeekTime(seekPosition);
+    }
+    @Override
+    public boolean isMediaplayerNull(){
+        if(mService.isMediaplayerNull()){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     @Override

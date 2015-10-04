@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2015 Amha Mogus amha.mogus@gmail.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package amhamogus.com.spotifystreamer.fragments;
 
 import android.app.Activity;
@@ -17,7 +32,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,15 +41,22 @@ import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.model.MyTrack;
 
 /**
- * A placeholder fragment containing a simple view.
+ * A simple {@link DialogFragment} subclass that displays the playback screen.
+ * Activities that use this must implement
+ * {@link amhamogus.com.spotifystreamer.fragments.PlaybackFragment.PlaybackEventListener}
+ * to handle playback events.
+ * To use this class call {@link PlaybackFragment#newInstance(String, ArrayList, int)}
+ * factory method.
  */
 public class PlaybackFragment extends DialogFragment {
+
 
     private BroadcastReceiver mBroadcastReceiver;
 
     private Handler handler;
     private Runnable runnable;
 
+    // Flags
     private static final String TRACK_PARAM = "trackID";
     private static final String TRACK_LIST_PARAM = "trackList";
     private static final String TRACK_NUMBER_PARAM = "playListNumber";
@@ -49,17 +70,28 @@ public class PlaybackFragment extends DialogFragment {
     private ImageButton nextButton;
     private ImageButton previousButton;
     private SeekBar seekBar;
+    private TextView playbackSeekValue;
 
-    // Variables for current track
+    // Meta-data about the current track
     private TextView albumName;
     private TextView artistName;
     private TextView trackName;
     private ImageView trackImage;
+
+    // Top 10 tracks for a spotify musician.
+    private ArrayList<MyTrack> trackList;
+
     protected MyTrack currentTrack;
     protected int trackNumber;
-    private ArrayList<MyTrack> trackList;
-    private TextView playbackSeekValue;
 
+    /**
+     * Factory method for creating Playback Fragments.
+     *
+     * @param trackID The track id for a spotify track.
+     * @param trackList {@link ArrayList} of {@link MyTrack} objects.
+     * @param position Integer value between 0-9 that is the current, user selected, track.
+     * @return
+     */
     public static PlaybackFragment newInstance(String trackID, ArrayList<MyTrack> trackList, int position) {
         currentTrackID = trackID;
 
@@ -126,9 +158,9 @@ public class PlaybackFragment extends DialogFragment {
         trackName = (TextView) fragment.findViewById(R.id.playback_track_name);
         trackImage = (ImageView) fragment.findViewById(R.id.playback_image);
         playbackSeekValue = (TextView) fragment.findViewById(R.id.playback_seek_value);
-
-        // Seekbar interactions.
         seekBar = (SeekBar) fragment.findViewById(R.id.seek_bar);
+
+        // handle seekbar interactions
         seekBar.setSaveEnabled(true);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -146,46 +178,64 @@ public class PlaybackFragment extends DialogFragment {
         });
 
         // Reference Playback controls.
-        playButton = (ImageButton) fragment.findViewById(R.id.imageButton);
-        pauseButton = (ImageButton) fragment.findViewById(R.id.pause_button);
-        nextButton = (ImageButton) fragment.findViewById(R.id.next_track_button);
-        previousButton = (ImageButton) fragment.findViewById(R.id.previous_track_button);
+        playButton = (ImageButton) fragment
+                .findViewById(R.id.imageButton);
 
+        pauseButton = (ImageButton) fragment
+                .findViewById(R.id.pause_button);
+
+        nextButton = (ImageButton) fragment
+                .findViewById(R.id.next_track_button);
+
+        previousButton = (ImageButton) fragment
+                .findViewById(R.id.previous_track_button);
+
+        // Toggle visibility of pause button
         pauseButton.setVisibility(View.INVISIBLE);
         updateDisplay(currentTrackID);
 
-//        if(seekBar.getProgress() == 0) {
-//            mCallback.passTrackPreview(currentTrack.getPreviewURL());
-//        }
-
+        // Handling play button press
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // the user has pressed the play button so hide
+                // the play button and show pause button
                 playButton.setVisibility(View.INVISIBLE);
                 pauseButton.setVisibility(View.VISIBLE);
+
+                // request playback from the the playback servers
                 mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
-        playButton.callOnClick();
 
+        // Handling pause button press
         pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // the user has pressed the pause button so hide
+                // the pause button, show the play button
                 playButton.setVisibility(View.VISIBLE);
                 pauseButton.setVisibility(View.INVISIBLE);
+
+                // send a pause request to the playback service.
                 mCallback.pauseTrack();
                 handler.removeCallbacks(runnable);
             }
         });
 
+        // Handling next button press
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCallback.isMediaplayerNull() == false) {
-                    // Stop current track
+                if (mCallback.isMediaplayerNull() == false) {
+                    // The media player is in playback (e.g. not null)
+                    // so we stop the current song.
                     mCallback.stopTrack();
                 }
+
                 handler.removeCallbacks(runnable);
+
+                // Set seekbar to 0
                 playbackSeekValue.setText(0 + "");
                 seekBar.setProgress(0);
 
@@ -209,8 +259,9 @@ public class PlaybackFragment extends DialogFragment {
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Stop current track
-                if(mCallback.isMediaplayerNull() == false) {
+                // The media player is in playback (e.g. not null)
+                // so we stop the current song.
+                if (mCallback.isMediaplayerNull() == false) {
                     mCallback.stopTrack();
                 }
                 handler.removeCallbacks(runnable);
@@ -224,11 +275,18 @@ public class PlaybackFragment extends DialogFragment {
                     trackNumber -= 1;
                 }
 
+                // Set seekbar to 0
                 seekBar.setProgress(0);
                 currentTrack = trackList.get(trackNumber);
+
                 updateDisplay(trackNumber + "");
+
+                // the user has pressed the previous button so hide
+                // the play button, show the pause button
                 playButton.setVisibility(View.INVISIBLE);
                 pauseButton.setVisibility(View.VISIBLE);
+
+                // request 30 second preview from playback service
                 mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
@@ -266,6 +324,8 @@ public class PlaybackFragment extends DialogFragment {
         super.onDestroyView();
     }
 
+    /** Utility method that's responsible for updating the Playback
+     Fragments UI.*/
     private void updateDisplay(String currentTrackID) {
         if (currentTrackID != null) {
 
@@ -284,14 +344,27 @@ public class PlaybackFragment extends DialogFragment {
         }
     }
 
+    /**
+     * Activities that use {@link PlaybackFragment} must implement this interface.
+     * The interface methods depend on {@link amhamogus.com.spotifystreamer.PlaybackService}
+     *
+     */
     public interface PlaybackEventListener {
+
+        /**
+         * Sends a playback request to {@link amhamogus.com.spotifystreamer.PlaybackService}
+         *
+         * @param previewURL URL of a Spotify Preview Track
+         * */
         public void passTrackPreview(String previewURL);
 
+        /** Sends a pause request to {@link amhamogus.com.spotifystreamer.PlaybackService} */
         public void pauseTrack();
 
-        public void seekTo(int seekPosition);
-
+        /** Sends a stop request to {@link amhamogus.com.spotifystreamer.PlaybackService} */
         public void stopTrack();
+
+        public void seekTo(int seekPosition);
 
         public boolean isMediaplayerNull();
     }

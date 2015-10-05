@@ -20,4 +20,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_track_playback">TrackPlayback</string>
+    
+    <string name="playback_track_title">Track Name</string>
+    <string name="playback_artist_name">Artist Name</string>
+    <string name="playback_album_name">Album Name</string>
+    <string name="playback_track_duration">Duration</string>
+    <string name="playback_default_value">0</string>
+    <string name="playback_track_length">30</string>
 </resources>

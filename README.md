@@ -1,11 +1,16 @@
-# SpotifyStreamer: Part 1
+# Spotify Streamer Overview
 
-An Android app that lets you search Spotify for musicians and their top songs. This app was written as part of the Android Nanodegree program offered by Google & Udacity. You can learn more about the program [here](https://www.udacity.com/course/android-developer-nanodegree--nd801).
+This app was written as part of the Android Nanodegree program offered by Google & Udacity. You can learn more about the program [here](https://www.udacity.com/course/android-developer-nanodegree--nd801). This app uses [Spotify's Web Api](https://developer.spotify.com/web-api/) to make search requests using artist names. The api returns the top 10 tracks for the requested artist and, when the user hits the play button, it streams a 30 second preview. 
 
-The **Search** screen displays search results below the text input field:
+# Mobile:
 
-![Spotify Streamer Search sceen] (http://amhamogus.com/projects/udacity/android/nano/spotify-1.png)
+![Artist Search] (http://amhamogus.com/projects/udacity/android/nano/mobile-spotify-search.png)
 
-Tapping an artist will launch the **Top 10 Tracks** screen:
+![Top 10 Tracks](http://amhamogus.com/projects/udacity/android/nano/mobile-spotify-top-tracks.png)
 
-![Top 10 Tracks Screen](http://amhamogus.com/projects/udacity/android/nano/spotify-2.png)
+
+# Tablet:
+
+![Artist Search] (http://amhamogus.com/projects/udacity/android/nano/tablet-spotify-search.png)
+
+![Playback] (http://amhamogus.com/projects/udacity/android/nano/tablet-spotify-playback.png)

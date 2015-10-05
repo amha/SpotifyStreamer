@@ -6,15 +6,21 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
+import amhamogus.com.spotifystreamer.PlaybackActivity;
 import amhamogus.com.spotifystreamer.R;
 import amhamogus.com.spotifystreamer.fragments.TopTracksFragment;
+import amhamogus.com.spotifystreamer.model.MyTrack;
 
 /**
  * List of Top Tracks for a given artist.
  */
-public class TopTracks extends Activity implements TopTracksFragment.OnFragmentInteractionListener {
+public class TopTracksActivity extends Activity implements TopTracksFragment.OnTopTrackSelectedListener{
 
     protected TopTracksFragment topTracksFragment;
+    protected ArrayList<MyTrack> topTracks;
+    protected int trackIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,7 @@ public class TopTracks extends Activity implements TopTracksFragment.OnFragmentI
             topTracksFragment = TopTracksFragment.newInstance(artist_id, artistName);
         }
 
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.top_track_fragment_holder, topTracksFragment, "tracks_fragment");
         transaction.commit();
@@ -51,7 +58,19 @@ public class TopTracks extends Activity implements TopTracksFragment.OnFragmentI
      * Helper class that requests top tracks from Spotify.
      */
 
-    public void onFragmentInteraction(String songName) {
-        return;
+    public void onTopTrackSelected(Bundle trackDetails) {
+        Intent intent = new Intent(getApplicationContext(), PlaybackActivity.class);
+        intent.putExtras(trackDetails);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outstate) {
+        super.onSaveInstanceState(outstate);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
     }
 }

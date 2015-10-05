@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/search_input"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"/>
+            android:layout_centerVertical="true"/>
 
         <ListView
             android:id="@+id/artistListView"

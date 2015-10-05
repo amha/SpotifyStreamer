@@ -8,34 +8,9 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity">
 
-
     <FrameLayout
         android:id="@+id/artist_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-    <!--<SearchView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:inputType="text"-->
-    <!--android:queryHint="@string/ghost_text"-->
-    <!--android:iconifiedByDefault="false"-->
-    <!--android:id="@+id/search_input" />-->
-
-    <!--<ProgressBar-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_below="@id/search_input"-->
-    <!--android:id="@+id/progress_bar"-->
-    <!--android:layout_marginTop="10dp" />-->
-
-    <!--<ListView-->
-    <!--android:id="@+id/artistListView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:layout_alignParentLeft="true"-->
-    <!--android:layout_below="@+id/search_input" />-->
 
 </RelativeLayout>

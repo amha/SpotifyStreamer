@@ -73,9 +73,9 @@ public class PlaybackFragment extends DialogFragment {
     private TextView playbackSeekValue;
 
     // Meta-data about the current track
-    private TextView albumName;
-    private TextView artistName;
-    private TextView trackName;
+//    private TextView albumName;
+//    private TextView artistName;
+//    private TextView trackName;
     private ImageView trackImage;
 
     // Top 10 tracks for a spotify musician.
@@ -87,9 +87,9 @@ public class PlaybackFragment extends DialogFragment {
     /**
      * Factory method for creating Playback Fragments.
      *
-     * @param trackID The track id for a spotify track.
+     * @param trackID   The track id for a spotify track.
      * @param trackList {@link ArrayList} of {@link MyTrack} objects.
-     * @param position Integer value between 0-9 that is the current, user selected, track.
+     * @param position  Integer value between 0-9 that is the current, user selected, track.
      * @return
      */
     public static PlaybackFragment newInstance(String trackID, ArrayList<MyTrack> trackList, int position) {
@@ -105,7 +105,7 @@ public class PlaybackFragment extends DialogFragment {
         args.putParcelableArrayList(TRACK_LIST_PARAM, trackList);
         args.putInt(TRACK_NUMBER_PARAM, position);
         fragment.setArguments(args);
-        //    fragment.setRetainInstance(true);
+        fragment.setRetainInstance(true);
         return fragment;
     }
 
@@ -153,9 +153,9 @@ public class PlaybackFragment extends DialogFragment {
         View fragment = inflater.inflate(R.layout.fragment_track_playback, container, false);
 
         // Reference UI Elements associated with a current track.
-        artistName = (TextView) fragment.findViewById(R.id.playback_artist_name);
-        albumName = (TextView) fragment.findViewById(R.id.playback_album_name);
-        trackName = (TextView) fragment.findViewById(R.id.playback_track_name);
+//        artistName = (TextView) fragment.findViewById(R.id.playback_artist_name);
+//        albumName = (TextView) fragment.findViewById(R.id.playback_album_name);
+//        trackName = (TextView) fragment.findViewById(R.id.playback_track_name);
         trackImage = (ImageView) fragment.findViewById(R.id.playback_image);
         playbackSeekValue = (TextView) fragment.findViewById(R.id.playback_seek_value);
         seekBar = (SeekBar) fragment.findViewById(R.id.seek_bar);
@@ -290,6 +290,10 @@ public class PlaybackFragment extends DialogFragment {
                 mCallback.passTrackPreview(currentTrack.getPreviewURL());
             }
         });
+
+        // play current song
+        playButton.performClick();
+
         return fragment;
     }
 
@@ -324,18 +328,36 @@ public class PlaybackFragment extends DialogFragment {
         super.onDestroyView();
     }
 
-    /** Utility method that's responsible for updating the Playback
-     Fragments UI.*/
+    /**
+     * Utility method that's responsible for updating the Playback
+     * Fragments UI.
+     */
     private void updateDisplay(String currentTrackID) {
         if (currentTrackID != null) {
-
             currentTrack = trackList.get(trackNumber);
-            getActivity().setTitle(currentTrack.getArtistName());
+
+            if (getDialog() != null) {
+                // if this fragment is displayed as a dialog
+                // set title to track and artist name
+                getDialog()
+                        .setTitle(currentTrack.getAlbumName()
+                                        + " | " + currentTrack.getArtistName());
+                //TODO: add subtitle text to the fragment
+            } else {
+                // we're running within the fragment activity
+                // so we update the activity title and subtitle
+                getActivity()
+                        .setTitle(currentTrack.getTrackName());
+                getActivity()
+                        .getActionBar()
+                        .setSubtitle(currentTrack.getAlbumName() + " | " +
+                                currentTrack.getArtistName());
+            }
 
             // Bind current track data with view elements.
-            artistName.setText(currentTrack.getArtistName());
-            albumName.setText(currentTrack.getAlbumName());
-            trackName.setText(currentTrack.getTrackName());
+//            artistName.setText(currentTrack.getArtistName());
+//            albumName.setText(currentTrack.getAlbumName());
+//            trackName.setText(currentTrack.getTrackName());
 
             Picasso.with(getActivity())
                     .load(currentTrack.getAlbumImageUrl()).into(trackImage);
@@ -347,7 +369,6 @@ public class PlaybackFragment extends DialogFragment {
     /**
      * Activities that use {@link PlaybackFragment} must implement this interface.
      * The interface methods depend on {@link amhamogus.com.spotifystreamer.PlaybackService}
-     *
      */
     public interface PlaybackEventListener {
 
@@ -355,13 +376,17 @@ public class PlaybackFragment extends DialogFragment {
          * Sends a playback request to {@link amhamogus.com.spotifystreamer.PlaybackService}
          *
          * @param previewURL URL of a Spotify Preview Track
-         * */
+         */
         public void passTrackPreview(String previewURL);
 
-        /** Sends a pause request to {@link amhamogus.com.spotifystreamer.PlaybackService} */
+        /**
+         * Sends a pause request to {@link amhamogus.com.spotifystreamer.PlaybackService}
+         */
         public void pauseTrack();
 
-        /** Sends a stop request to {@link amhamogus.com.spotifystreamer.PlaybackService} */
+        /**
+         * Sends a stop request to {@link amhamogus.com.spotifystreamer.PlaybackService}
+         */
         public void stopTrack();
 
         public void seekTo(int seekPosition);

@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2015 Amha Mogus amha.mogus@gmail.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package amhamogus.com.spotifystreamer.fragments;
 
 import android.app.Activity;
@@ -24,8 +39,8 @@ import amhamogus.com.spotifystreamer.net.SpotifyRequest;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TopTracksFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * {@link amhamogus.com.spotifystreamer.fragments.TopTracksFragment.OnTopTrackSelectedListener}
+ * interface to handle interaction events.
  * Use the {@link TopTracksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -66,7 +81,7 @@ public class TopTracksFragment extends Fragment {
         args.putString(ARG_PARAM1, id);
         args.putString(ARG_PARAM2, name);
         fragment.setArguments(args);
-        return fragment;
+         return fragment;
     }
 
     public TopTracksFragment() {
@@ -101,13 +116,17 @@ public class TopTracksFragment extends Fragment {
             topTracks = savedInstanceState.getParcelableArrayList("tracks");
             adapter =
                     new TrackListAdapter(getActivity().getApplicationContext(), 0, topTracks);
-            mList.setAdapter(adapter);
+
+            if(mList != null) {
+                mList.setAdapter(adapter);
+            }
         }
         return fragmentLayout;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outstate) {
+        // persist track list during runtime changes
         outstate.putParcelableArrayList("tracks", topTracks);
         super.onSaveInstanceState(outstate);
     }
@@ -142,10 +161,7 @@ public class TopTracksFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+
      */
     public interface OnTopTrackSelectedListener {
         // TODO: Update argument type and name

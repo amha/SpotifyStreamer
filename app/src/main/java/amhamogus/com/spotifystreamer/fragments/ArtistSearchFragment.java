@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2015 Amha Mogus amha.mogus@gmail.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package amhamogus.com.spotifystreamer.fragments;
 
 import android.app.Activity;
@@ -42,7 +57,14 @@ public class ArtistSearchFragment extends Fragment {
      */
     protected MyArtistAdapter myArtistAdapter;
 
+    /**
+     * Display progress bar while fetching artist search results.
+     */
     private ProgressBar progressBar;
+
+    /**
+     * On Press listener for a list of artists.
+     */
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -51,7 +73,6 @@ public class ArtistSearchFragment extends Fragment {
      *
      * @return A new instance of fragment ArtistSearchFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ArtistSearchFragment newInstance() {
         ArtistSearchFragment fragment = new ArtistSearchFragment();
         return fragment;
@@ -122,11 +143,8 @@ public class ArtistSearchFragment extends Fragment {
             listView.setAdapter(myArtistAdapter);
         }
         return fragmentView;
-
-
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Bundle bundle) {
         if (mListener != null) {
             mListener.onFragmentInteraction(bundle);
@@ -167,7 +185,6 @@ public class ArtistSearchFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Bundle bundle);
     }
 
@@ -222,15 +239,10 @@ public class ArtistSearchFragment extends Fragment {
                         bundle.putString("ARTIST_ID", selectedArtist.getId());
 
                         onButtonPressed(bundle);
-//                        Intent intent =
-//                                new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
-//                        intent.putExtras(bundle);
-//                        startActivity(intent, bundle);
                     }
                 });
                 listView.setAdapter(myArtistAdapter);
             }
         }
     }
-
 }

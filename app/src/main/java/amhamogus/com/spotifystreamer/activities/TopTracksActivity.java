@@ -42,6 +42,7 @@ public class TopTracksActivity extends Activity implements TopTracksFragment.OnT
             topTracksFragment = TopTracksFragment.newInstance(artist_id, artistName);
         }
 
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.top_track_fragment_holder, topTracksFragment, "tracks_fragment");
         transaction.commit();
@@ -61,5 +62,15 @@ public class TopTracksActivity extends Activity implements TopTracksFragment.OnT
         Intent intent = new Intent(getApplicationContext(), PlaybackActivity.class);
         intent.putExtras(trackDetails);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outstate) {
+        super.onSaveInstanceState(outstate);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
     }
 }

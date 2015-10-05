@@ -3,13 +3,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/artist_fragment"
-        android:name="amhamogus.com.spotifystreamer.fragments.ArtistSearchFragment"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        />
+        android:id="@+id/search_frame"/>
 
     <FrameLayout
         android:id="@+id/tablet_frame"

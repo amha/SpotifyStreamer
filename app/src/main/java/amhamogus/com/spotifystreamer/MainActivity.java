@@ -104,7 +104,6 @@ public class MainActivity extends Activity implements ArtistSearchFragment.OnFra
                                 .findFragmentByTag("tracks_fragment");
 
                         transaction.replace(R.id.tablet_frame, topTracksFragment, "tracks_fragment");
-                        Log.d("AMHA_FRAGMENT", "track_fragment is not null");
                     }
                     transaction.commit();
 
@@ -257,7 +256,6 @@ public class MainActivity extends Activity implements ArtistSearchFragment.OnFra
             return false;
         }
     }
-
 
     /**
      * Bind to {@link PlaybackService} to handle all requests

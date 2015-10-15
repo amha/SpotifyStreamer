@@ -152,10 +152,6 @@ public class PlaybackFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_track_playback, container, false);
 
-        // Reference UI Elements associated with a current track.
-//        artistName = (TextView) fragment.findViewById(R.id.playback_artist_name);
-//        albumName = (TextView) fragment.findViewById(R.id.playback_album_name);
-//        trackName = (TextView) fragment.findViewById(R.id.playback_track_name);
         trackImage = (ImageView) fragment.findViewById(R.id.playback_image);
         playbackSeekValue = (TextView) fragment.findViewById(R.id.playback_seek_value);
         seekBar = (SeekBar) fragment.findViewById(R.id.seek_bar);
@@ -291,9 +287,10 @@ public class PlaybackFragment extends DialogFragment {
             }
         });
 
-        // play current song
-        playButton.performClick();
-
+        if(this!=null) {
+            // play current song
+            playButton.performClick();
+        }
         return fragment;
     }
 

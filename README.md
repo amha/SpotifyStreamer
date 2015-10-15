@@ -1,7 +1,7 @@
 # Overview
 This app was written as part of the Android Nanodegree program offered by Google & Udacity. You can learn more about the program here. This app uses Spotify's Web Api to make search requests using artist names. The api returns the top 10 tracks for the requested artist and, when the user hits the play button, it streams a 30 second preview.
 
-# Liscence
+# License
 
 Copyright 2015 Amha Mogus
 
